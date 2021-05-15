@@ -12,13 +12,13 @@ Methods:
 
 
 Example:
-
-  #include <iostream>
-  #include "AnyBaseConversion.h"
+```
+#include <iostream>
+#include "AnyBaseConversion.h"
 
   int main()
-  {
-    std::setlocale(LC_ALL, "en_US.utf8");
+	{
+		std::setlocale(LC_ALL, "en_US.utf8");
     std::string number;
     while (number != "exit")
     {
@@ -57,3 +57,4 @@ Example:
     }
     return 0;
   }
+```
