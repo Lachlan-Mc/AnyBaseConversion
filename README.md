@@ -2,7 +2,7 @@
 C++ single-header-only library to convert a number expressed in any base to any other base.
 
 
-Methods:
+**Methods:**
 
   input method takes a string and either a Base (binary, octal, decimal or hexadecimal) or a user-defined character set (e.g. "0123456789ab" could be used for base12 - the user can choose their own encoding, as long as no symbol is repeated in the character set.)
 
@@ -11,7 +11,7 @@ Methods:
   output_with_new_base method either takes a Base (with option boolean as second parameter to output uppercase letters if hexadecimal is chosen) or a user-defined character set.
 
 
-Example:
+**Example:**
 ```
 #include <iostream>
 #include "AnyBaseConversion.h"
