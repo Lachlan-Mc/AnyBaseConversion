@@ -5,11 +5,12 @@ C++ single-header-only library to convert a number expressed in any base (using 
 Requires Boost - https://boost.org Boost 1.76.0 is included in src/boost, but need not be downloaded if you already have Boost installed. AnyBaseConversion uses the multiprecision library, specifically the cpp_int type and a defined cpp_dec_float subtype with precision of 1000 decimal places.
 
 **Methods:**
-    **input** method takes a string and either a Base (binary, octal, decimal or hexadecimal) or a user-defined character set (e.g. "0123456789ab" could be used for base12 - the user can choose their own encoding, as long as no symbol is repeated in the character set.)
 
-    **set_float_precision** method takes an integer and sets the precision (maximum number of decimal places following the decimal point) for conversion of floats. Maximum possible precision is 1000. Setting the float precision is not required. If a float is entered, the precision will default to 10.
+**input** method takes a string and either a Base (binary, octal, decimal or hexadecimal) or a user-defined character set (e.g. "0123456789ab" could be used for base12 - the user can choose their own encoding, as long as no symbol is repeated in the character set.)
 
-    **output_with_new_base** method either takes a Base (with option boolean as second parameter to output uppercase letters if hexadecimal is chosen) or a user-defined character set.
+**set_float_precision** method takes an integer and sets the precision (maximum number of decimal places following the decimal point) for conversion of floats. Maximum possible precision is 1000. Setting the float precision is not required. If a float is entered, the precision will default to 10.
+
+**output_with_new_base** method either takes a Base (with option boolean as second parameter to output uppercase letters if hexadecimal is chosen) or a user-defined character set.
 
 **Instructions**
 The only public methods are the three described above. All inputs are strings, except for the Base enum (binary, octal, decimal or hexadecimal) which can be used instead of a user-defined character set.
