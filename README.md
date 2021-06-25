@@ -36,8 +36,8 @@ The preferred way to return the converted number is via a ConversionReturn struc
 The integer part of any conversion can be of arbitrary size. It is calculated separately to any post- floating point part of the conversion. Because of this, the precision never refers to significant figures -  the number of digits in the integer is irrelevant. It always refers to the number of places after the floating point. The default is 10 but it can be set to any number. However, there is a maximum number of possible places, beyond which the conversion will become inaccurate. The maximum number of possible places depends on the base of the output, and if a higher precision is requested the object will throw a warning and use the lower number as the precision. The maximum precision using bases up to 100 follows.
 
 When the output base is...     ...the maximum possible precision is...
-- 2                               5979
-- 3                               3772
+- 2\                               5979
+- 3\                               3772
 - 4                               2989
 - 5                               2575
 - 6                               2313
