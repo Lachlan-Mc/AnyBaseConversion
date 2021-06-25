@@ -7,7 +7,7 @@ C++ single- header-only library to convert a number expressed in any base (using
 Requires Boost - https://boost.org Boost 1.76.0 is included in src/boost, but need not be downloaded if you already have Boost installed. AnyBaseConversion uses the Boost multiprecision library, specifically the cpp_int type and a defined cpp_dec_float subtype with precision of 1800 decimal places at base 10.
 
 
-**Methods:**
+**Methods**
 
 ***input*** method takes a string/wstring and either a Base (see below for defined bases) or a user-defined character set (e.g. "0123456789ab" could be used for base12 - the user can choose their own encoding, as long as no symbol is repeated in the character set.)
 
@@ -21,6 +21,7 @@ Setting the float precision is not required. If no precision is set, it will def
 
 
 **Instructions**
+
 The only public methods are the ones described above. All inputs are strings or wstrings, except for the Base enum (see below for pre-defined Bases) which can be used instead of a user-defined character set.
 
 The object is able to convert an arbitrarily high integer to another base, plus a float with a precision up to the maximum listed below.
@@ -29,10 +30,12 @@ To use AnyBaseConversion, create a new empty BaseConversion object then use the 
 
 
 **ConversionReturn**
+
 The preferred way to return the converted number is via a ConversionReturn struct. The struct contains much more information than just the resulting output, such as whether errors/warnings were encountered, the content of those errors/warnings, the maximum precision available at the requested output base, the actual precision used, whether the output of a converted float is rounded or exact, etc. See the code for more details.
 
 
 **Precision**
+
 The integer part of any conversion can be of arbitrary size. It is calculated separately to any post-floating point part of the conversion. Because of this, the precision never refers to significant figures - the number of digits in the integer is irrelevant. It always refers to the number of places after the floating point. The default is 10 but it can be set to any number. However, there is a maximum number of possible places, beyond which the conversion will become inaccurate. The maximum number of possible places depends on the base of the output, and if a higher precision is requested the object will throw a warning and use the lower number as the precision. The maximum precision using bases up to 100 follows.
 
 When the output base is...     ...the maximum possible precision is...
@@ -139,6 +142,7 @@ When the output base is...     ...the maximum possible precision is...
 ```
 
 **Predefined bases**
+
 Predefined bases which can be entered as an enum are:
 ```
 binary             "01"
@@ -171,7 +175,7 @@ base64             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567
 
 To define your own digit symbols, simply enter a string in the user-defined character set which starts with the digit for 0, then 1 and so on. For example, "0123456789abcdef" is the inbuilt character set for hexadecimal, but a user could enter "ABCDEFGHIJKLMNOP" as the encoding for the number going in or the number coming out if they preferred.
 
-**Example:**
+**Example**
 ```
 #include <iostream>
 #include <string>
