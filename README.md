@@ -140,6 +140,7 @@ When the output base is...     ...the maximum possible precision is...
 
 **Predefined bases**
 Predefined bases which can be entered as an enum are:
+```
 binary             "01"
 ternary            "012"
 quaternary         "0123"
@@ -162,6 +163,7 @@ base32             "abcdefghijklmnopqrstuvwxyz234567"
 base36             "0123456789abcdefghijklmnopqrstuvwxyz"
 base58             "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 base64             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+```
 *\* Duodecimal and docenal are alternative names for the same base 12 character set.
 
 
