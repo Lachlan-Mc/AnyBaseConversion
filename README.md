@@ -179,32 +179,32 @@ To define your own digit symbols, simply enter a string in the user-defined char
 
 int main()
 {
-  std::setlocale(LC_ALL, "en_US.utf8");
-  std::string number;
-  while (number != "exit")
-  {
-    std::cout << "Enter a number in any base:" << std::endl;
-    std::cin >> number;
-    if (number != "exit")
-    {
-      std::cout << "Enter the digits encoding the number (or 2 for binary, 8 for octal, 10 for decimal, 16 for hexadecimal):" << std::endl;
-      std::string base;
-      std::cin >> base;
-      AnyBaseConversion::BaseConversion converter {};
-      converter.set_float_precision(1001);
+        std::setlocale(LC_ALL, "en_US.utf8");
+        std::string number;
+        while (number != "exit")
+        {
+                std::cout << "Enter a number in any base:" << std::endl;
+                std::cin >> number;
+                if (number != "exit")
+                {
+                        std::cout << "Enter the digits encoding the number (or 2 for binary, 8 for octal, 10 for decimal, 16 for hexadecimal):" << std::endl;
+                        std::string base;
+                        std::cin >> base;
+                        AnyBaseConversion::BaseConversion converter {};
+                        converter.set_float_precision(1001);
 
-      bool base_contains_only_decimal_digits = true;
-      std::string decimal_digits = AnyBaseConversion::get_char_set_from_base(AnyBaseConversion::decimal);
-      for (size_t i = 0; i < base.size(); i++)
+                        bool base_contains_only_decimal_digits = true;
+                        std::string decimal_digits = AnyBaseConversion::get_char_set_from_base(AnyBaseConversion::decimal);
+                        for (size_t i = 0; i < base.size(); i++)
                         {
                                 if (decimal_digits.find_first_of(base[i]) == std::string::npos)
                                         base_contains_only_decimal_digits = false;
                         }
 
-      bool base_matches_defined_digits = false;
-      bool defined_digits_match_found = false;
-      std::vector<AnyBaseConversion::BaseInformation>::iterator it = AnyBaseConversion::base_information_vector.begin();
-      while (!defined_digits_match_found && it != AnyBaseConversion::base_information_vector.end() && base_contains_only_decimal_digits)
+                        bool base_matches_defined_digits = false;
+                        bool defined_digits_match_found = false;
+                        std::vector<AnyBaseConversion::BaseInformation>::iterator it = AnyBaseConversion::base_information_vector.begin();
+                        while (!defined_digits_match_found && it != AnyBaseConversion::base_information_vector.end() && base_contains_only_decimal_digits)
                         {
                                 AnyBaseConversion::BaseInformation current_base_info = *it;
                                 if (current_base_info.digits.size() == std::stoi(base, nullptr, 10))
@@ -215,9 +215,9 @@ int main()
                                 it++;
                         }
                         if (!defined_digits_match_found)
-        converter.input(number, base);
+                                converter.input(number, base);
 
-      for (AnyBaseConversion::BaseInformation base_info : AnyBaseConversion::base_information_vector)
+                        for (AnyBaseConversion::BaseInformation base_info : AnyBaseConversion::base_information_vector)
                         {
                                 AnyBaseConversion::ConversionReturn abc = converter.output_conversion_return(base_info.base);
                                 if (abc.errors.size() > 0)
@@ -234,8 +234,8 @@ int main()
                                 std::cout << "Precision used in this calculation: " + std::to_string(abc.precision) << std::endl;
                                 std::cout << "The number has " << (abc.rounded ? "" : "not ") << "been rounded." << std::endl;
                         }
-    }
-  }
-  return 0;
+                }
+        }
+        return 0;
 }
 ```
