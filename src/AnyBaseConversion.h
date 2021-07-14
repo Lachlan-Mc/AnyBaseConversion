@@ -196,13 +196,6 @@ namespace AnyBaseConversion
                 return convert_string_to_wstring(char_set);
         }
 
-        //Converts integers from one base to another, using specified character sets.
-        std::wstring convert_base(std::wstring &num_string, std::wstring &digits_from, std::wstring &digits_to)
-        {
-                boost::multiprecision::cpp_int num = convert_number_wstring_to_integer(num_string, digits_from);
-                return convert_integer_to_wstring(num, digits_to);
-        }
-
         //Counts the number of times a character appears in a wstring.
         size_t count_instances_of_wchar_t_in_wstring(wchar_t character, std::wstring &str)
         {
@@ -335,7 +328,7 @@ namespace AnyBaseConversion
                 //Allows some defined bases (e.g. hexadecimal) to convert digits which are letters to uppercase. Only available for those bases which already use lowercase letters but no uppercase letters as digits.
 		std::string output_string(Base base, bool use_uppercase = false)
 		{
-			ConversionReturn conversion_return = generate_conversion_return(convert_base_to_char_set(base), use_uppercase);
+			ConversionReturn conversion_return = generate_conversion_return(base, use_uppercase);
 			return convert_wstring_to_string(conversion_return.output);
 		}
 
@@ -350,7 +343,7 @@ namespace AnyBaseConversion
 		//Output the number as a wstring in a defined base. If an error occurs, will output an empty string: "".
 		std::wstring output_wstring(Base base, bool use_uppercase = false)
 		{
-			ConversionReturn conversion_return = generate_conversion_return(convert_base_to_char_set(base), use_uppercase);
+			ConversionReturn conversion_return = generate_conversion_return(base, use_uppercase);
 			return conversion_return.output;
 		}
 
@@ -366,7 +359,7 @@ namespace AnyBaseConversion
 		//Output the number as a ConversionReturn in a defined base.
 		AnyBaseConversion::ConversionReturn output_conversion_return(Base base, bool use_uppercase = false)
 		{
-		        ConversionReturn conversion_return = generate_conversion_return(convert_base_to_char_set(base), use_uppercase);
+		        ConversionReturn conversion_return = generate_conversion_return(base, use_uppercase);
 		        return conversion_return;
 		}
 
@@ -491,7 +484,14 @@ namespace AnyBaseConversion
 			}
 		}
 
-		ConversionReturn generate_conversion_return(std::wstring output_digits, bool use_uppercase = false)
+		ConversionReturn generate_conversion_return(Base base, bool use_uppercase = false)
+		{
+			if (!does_base_allow_use_uppercase(base))
+				use_uppercase = false;
+			return generate_conversion_return(convert_base_to_char_set(base), use_uppercase, true);
+		}
+
+		ConversionReturn generate_conversion_return(std::wstring output_digits, bool use_uppercase = false, bool defined_base_requested = false)
 		{
 		        ConversionReturn conversion_return {};
 		        populate_conversion_return (conversion_return);
@@ -502,7 +502,7 @@ namespace AnyBaseConversion
                                 convert_front(conversion_return);
                                 if (conversion_return.is_float)
                                                 convert_back(conversion_return);
-                                if (use_uppercase)
+                                if (defined_base_requested && use_uppercase)
                                         convert_output_digits_to_uppercase(conversion_return);
 		        }
 		        else
@@ -546,15 +546,13 @@ namespace AnyBaseConversion
                         {
                                 conversion_return.output_base = output_digits.size();
                                 conversion_return.output_digits = output_digits;
-                                if (defined_input_digits)
-                                        conversion_return.output_base_allows_use_uppercase = does_base_allow_use_uppercase(base_used);
                         }
 		}
 
 		void convert_front(ConversionReturn &conversion_return)
 		{
 			if (!conversion_return.errors_encountered)
-                                conversion_return.before_point = convert_base(input_front, input_digits, conversion_return.output_digits);
+                                convert_base_front(conversion_return);
 		}
 
 		void convert_back(ConversionReturn & conversion_return)
@@ -563,6 +561,30 @@ namespace AnyBaseConversion
                                 convert_base_back(conversion_return);
 		}
 
+		void trim_zeroes_from_integer(ConversionReturn &conversion_return)
+		{
+		        wchar_t zero_char = conversion_return.output_digits[0];
+		        if (conversion_return.before_point.size() > 1)
+                        {
+                                bool only_zeroes_encountered = true;
+                                while (only_zeroes_encountered)
+                                {
+                                        if (conversion_return.before_point[0] == zero_char)
+                                                conversion_return.before_point = conversion_return.before_point.substr(1, std::wstring::npos);
+                                        else
+                                                only_zeroes_encountered = false;
+                                }
+                        }
+                        if (conversion_return.before_point.size() == 0)
+                                conversion_return.before_point += zero_char;
+		}
+
+                void convert_base_front(ConversionReturn &conversion_return)
+                {
+                        boost::multiprecision::cpp_int num = convert_number_wstring_to_integer(input_front, input_digits);
+                        conversion_return.before_point = convert_integer_to_wstring(num, conversion_return.output_digits);
+                        trim_zeroes_from_integer(conversion_return);
+                }
 
 		void convert_base_back(ConversionReturn &conversion_return)
 		{
